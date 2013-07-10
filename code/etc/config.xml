@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <BlueAcorn_Greenspec>
+      <!-- declare module's version information for database updates -->
+      <version>0.1.0</version>
+    </BlueAcorn_Greenspec>
+  </modules>
+
+  <global>
+    <models>
+      <greenspec>
+	<class>BlueAcorn_Greenspec_Model</class>
+      </greenspec>
+    </models>
+  </global>
+
+  <default>
+    <payment>
+      <greenspec>
+        <active>1</active>
+        <model>greenspec/paymentMethod</model>
+        <order_status>processing</order_status>
+        <title>Greenspec Payment Method</title>
+      </greenspec>
+    </payment>
+  </default>
+
+</config>
