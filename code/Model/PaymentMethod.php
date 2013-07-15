@@ -76,4 +76,18 @@ class BlueAcorn_Greenspec_Model_PaymentMethod extends Mage_Payment_Model_Method_
 
     /* @see examples of transaction specific public methods such as */
     /* authorize, capture and void in Mage_Paygate_Model_Authorizenet */
+
+    public static function canApply(Mage_Sales_Model_Quote_Address $address) {
+        $quote = $address->getQuote();
+
+
+        /* var_dump($address->getAllShippingRates()); */
+        /* var_dump($address->getShippingMethod()); */
+
+        return true;
+    }
+
+    public static function getFee() {
+        return 11;
+    }
 }
