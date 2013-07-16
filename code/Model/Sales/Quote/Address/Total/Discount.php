@@ -1,6 +1,6 @@
 <?php
 
-class BlueAcorn_Greenspec_Model_Sales_Quote_Address_Total_Bonus
+class BlueAcorn_Greenspec_Model_Sales_Quote_Address_Total_Discount
 extends Mage_Sales_Model_Quote_Address_Total_Abstract {
 
     protected $_code = 'greenspec';
@@ -23,10 +23,10 @@ extends Mage_Sales_Model_Quote_Address_Total_Abstract {
         /* var_dump($quote->getCheckoutMethod()); */
 
 
-        if(BlueAcorn_Greenspec_Model_PaymentMethod::canApply($address)){ //your business logic
+        if(BlueAcorn_Greenspec_Model_Greenspec::canApply($address)){ //your business logic
 
             $exist_amount = $quote->getGreenspecBonusAmount();
-            $amount = BlueAcorn_Greenspec_Model_PaymentMethod::getBonus($address);
+            $amount = BlueAcorn_Greenspec_Model_Greenspec::getBonus($address);
 
             $address->setGreenspecBonusAmount($amount);
             $address->setGreenspecBonusBaseAmount($amount);

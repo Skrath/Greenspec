@@ -3,7 +3,7 @@
 /**
  * Our test CC module adapter
  */
-class BlueAcorn_Greenspec_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstract
+class BlueAcorn_Greenspec_Model_Greenspec extends Mage_Payment_Model_Method_Abstract
 {
     protected $_code = 'greenspec';
 
@@ -57,8 +57,8 @@ class BlueAcorn_Greenspec_Model_PaymentMethod extends Mage_Payment_Model_Method_
      */
     protected $_canSaveCc = false;
 
-    protected $shippingMethod;
-    protected $paymentMethod;
+    protected static $shippingMethod;
+    protected static $paymentMethod;
 
     private static $nextDayShippingMethods = array('ups_1DP', 'ups_1DA', 'ups_1DM', 'fedex_FEDEX_1_DAY_FREIGHT', 'fedex_FIRST_OVERNIGHT');
     private static $freeShippingMethods = array('freeshipping_freeshipping');
@@ -77,7 +77,7 @@ class BlueAcorn_Greenspec_Model_PaymentMethod extends Mage_Payment_Model_Method_
         $quote = $address->getQuote();
 
 
-        if ( in_array($shippingMethod, self::$nextDayShippingMethods) ) {
+        if ( in_array(self::$shippingMethod, self::$nextDayShippingMethods) ) {
             $apply = true;
         }
 
