@@ -44,14 +44,6 @@
       </quote>
     </sales>
 
-    <events>
-      <checkout_submit_all_after>
-        <type>singleton</type>
-        <class>ba_greenspec/observer</class>
-        <method>sayHello</method>
-      </checkout_submit_all_after>
-    </events>
-
     <fieldsets>
       <sales_convert_quote_address>
         <greenspec_bonus_amount><to_order>*</to_order></greenspec_bonus_amount>
