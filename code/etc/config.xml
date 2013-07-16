@@ -9,10 +9,17 @@
 
   <global>
     <models>
-      <greenspec>
-	<class>BlueAcorn_Greenspec_Model</class>
-      </greenspec>
+      <ba_greenspec>
+        <class>BlueAcorn_Greenspec_Model</class>
+      </ba_greenspec>
     </models>
+
+    <helpers>
+      <ba_greenspec>
+        <class>BlueAcorn_Greenspec_Helper</class>
+      </ba_greenspec>
+    </helpers>
+
 
     <resources>
       <greenspec_setup>
@@ -24,15 +31,26 @@
     </resources>
 
 
+    <!-- Add Collector to quote object -->
     <sales>
       <quote>
-	<totals>
-	  <greenspec_nextday>
-	    <class>greenspec/sales_quote_address_total_bonus</class>
-	  </greenspec_nextday>
-	</totals>
+        <totals>
+          <greenspec>
+            <class>ba_greenspec/sales_quote_address_total_discount</class>
+            <after>weee,discount,tax,tax_subtotal,grand_total</after>
+            <before>giftcardaccount,customerbalance</before>
+          </greenspec>
+        </totals>
       </quote>
     </sales>
+
+    <events>
+      <checkout_submit_all_after>
+        <type>singleton</type>
+        <class>ba_greenspec/observer</class>
+        <method>sayHello</method>
+      </checkout_submit_all_after>
+    </events>
 
     <fieldsets>
       <sales_convert_quote_address>
@@ -47,9 +65,12 @@
     <payment>
       <greenspec>
         <active>1</active>
-        <model>greenspec/paymentMethod</model>
-        <order_status>processing</order_status>
-        <title>Greenspec Payment Method</title>
+        <model>ba_greenspec/greenspec</model>
+        <order_status>pending</order_status>
+        <title>Greenspec</title>
+        <cctypes>AE,VI,MC,DI,SS</cctypes>
+        <payment_action>authorize_capture</payment_action>
+        <allowspecific>0</allowspecific>
       </greenspec>
     </payment>
   </default>
