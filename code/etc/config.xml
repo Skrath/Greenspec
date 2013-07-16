@@ -61,10 +61,5 @@
                 <allowspecific>0</allowspecific>
             </greenspec>
         </payment>
-        <sales>
-            <totals_sort>
-                <greenspec>101</greenspec>
-            </totals_sort>
-        </sales>
     </default>
 </config>
