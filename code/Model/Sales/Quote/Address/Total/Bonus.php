@@ -36,10 +36,6 @@ extends Mage_Sales_Model_Quote_Address_Total_Abstract {
             $address->setGrandTotal($address->getGrandTotal() + $address->getGreenspecBonusAmount());
             $address->setBaseGrandTotal($address->getBaseGrandTotal() + $address->getGreenspecBonusBaseAmount());
 
-            /* echo $exist_amount; */
-
-            var_dump($address->getSubtotal());
-            var_dump($address->getBaseGrandTotal());
         }
     }
 
