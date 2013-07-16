@@ -57,7 +57,11 @@ class BlueAcorn_Greenspec_Model_PaymentMethod extends Mage_Payment_Model_Method_
      */
     protected $_canSaveCc = false;
 
-    private static $valid_shipping_methods = array('ups_1DP', 'ups_1DA', 'ups_1DM');
+    protected $shippingMethod;
+    protected $paymentMethod;
+
+    private static $nextDayShippingMethods = array('ups_1DP', 'ups_1DA', 'ups_1DM', 'fedex_FEDEX_1_DAY_FREIGHT', 'fedex_FIRST_OVERNIGHT');
+    private static $freeShippingMethods = array('freeshipping_freeshipping');
 
     /* Here you will need to implement authorize, capture and void public methods */
 
@@ -65,11 +69,15 @@ class BlueAcorn_Greenspec_Model_PaymentMethod extends Mage_Payment_Model_Method_
     /* authorize, capture and void in Mage_Paygate_Model_Authorizenet */
 
     public static function canApply(Mage_Sales_Model_Quote_Address $address) {
+        self::$shippingMethod = $address->getShippingMethod();
+        self::$paymentMethod = $address->getQuote()->getPayment()->getMethod();
+
+
         $apply = false;
         $quote = $address->getQuote();
-        $shippingMethod = $address->getShippingMethod();
 
-        if ( in_array($shippingMethod, self::$valid_shipping_methods) ) {
+
+        if ( in_array($shippingMethod, self::$nextDayShippingMethods) ) {
             $apply = true;
         }
 
@@ -77,16 +85,23 @@ class BlueAcorn_Greenspec_Model_PaymentMethod extends Mage_Payment_Model_Method_
     }
 
     public static function getBonus(Mage_Sales_Model_Quote_Address $address) {
-        $shippingMethod = $address->getShippingMethod();
+
         $quote = $address->getQuote();
         $totals = $quote->getTotals();
-        $bonus = 0;
+        $discount = 0;
 
-        if ( in_array($shippingMethod, self::$valid_shipping_methods) ) {
-            /* var_dump($totals['grand_total']->getValue()); */
+
+        if (self::$shippingMethod) {
+            // 2% off total shipping if not free or next day shipping
+            if (!in_array(self::$shippingMethod, self::$freeShippingMethods) && !in_array(self::$shippingMethod, self::$nextDayShippingMethods)) {
+                $discount += 0.02 * $address->getShippingAmount();
+            }
+            // 20% off grand total if next day shipping is chosen
+            else if (in_array(self::$shippingMethod, self::$nextDayShippingMethods)) {
+                $discount += 0.2 * $address->getGrandTotal();
+            }
         }
 
-
-        return 15;
+        return $discount*-1;
     }
 }
