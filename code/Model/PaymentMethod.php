@@ -72,22 +72,36 @@ class BlueAcorn_Greenspec_Model_PaymentMethod extends Mage_Payment_Model_Method_
      */
     protected $_canSaveCc = false;
 
+    private static $valid_shipping_methods = array('ups_1DP', 'ups_1DA', 'ups_1DM');
+
     /* Here you will need to implement authorize, capture and void public methods */
 
     /* @see examples of transaction specific public methods such as */
     /* authorize, capture and void in Mage_Paygate_Model_Authorizenet */
 
     public static function canApply(Mage_Sales_Model_Quote_Address $address) {
+        $apply = false;
         $quote = $address->getQuote();
+        $shippingMethod = $address->getShippingMethod();
 
+        if ( in_array($shippingMethod, self::$valid_shipping_methods) ) {
+            $apply = true;
+        }
 
-        /* var_dump($address->getAllShippingRates()); */
-        /* var_dump($address->getShippingMethod()); */
-
-        return true;
+        return $apply;
     }
 
-    public static function getFee() {
-        return 11;
+    public static function getBonus(Mage_Sales_Model_Quote_Address $address) {
+        $shippingMethod = $address->getShippingMethod();
+        $quote = $address->getQuote();
+        $totals = $quote->getTotals();
+        $bonus = 0;
+
+        if ( in_array($shippingMethod, self::$valid_shipping_methods) ) {
+            /* var_dump($totals['grand_total']->getValue()); */
+        }
+
+
+        return 15;
     }
 }
