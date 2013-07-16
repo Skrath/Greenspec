@@ -5,22 +5,7 @@
  */
 class BlueAcorn_Greenspec_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstract
 {
-    /**
-     * unique internal payment method identifier
-     *
-     * @var string [a-z0-9_]
-     */
     protected $_code = 'greenspec';
-
-    /**
-     * Here are examples of flags that will determine functionality availability
-     * of this module to be used by frontend and backend.
-     *
-     * @see all flags and their defaults in Mage_Payment_Model_Method_Abstract
-     *
-     * It is possible to have a custom dynamic logic by overloading
-     * public function can* for each flag respectively
-     */
 
     /**
      * Is this payment method a gateway (online auth/charge) ?
