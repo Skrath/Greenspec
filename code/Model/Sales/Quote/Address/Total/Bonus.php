@@ -25,9 +25,8 @@ extends Mage_Sales_Model_Quote_Address_Total_Abstract {
 
         if(BlueAcorn_Greenspec_Model_PaymentMethod::canApply($address)){ //your business logic
 
-            /* var_dump($address->getShippingMethod()); */
             $exist_amount = $quote->getGreenspecBonusAmount();
-            $amount = BlueAcorn_Greenspec_Model_PaymentMethod::getFee();
+            $amount = BlueAcorn_Greenspec_Model_PaymentMethod::getBonus($address);
 
             $address->setGreenspecBonusAmount($amount);
             $address->setGreenspecBonusBaseAmount($amount);
@@ -37,10 +36,10 @@ extends Mage_Sales_Model_Quote_Address_Total_Abstract {
             $address->setGrandTotal($address->getGrandTotal() + $address->getGreenspecBonusAmount());
             $address->setBaseGrandTotal($address->getBaseGrandTotal() + $address->getGreenspecBonusBaseAmount());
 
-            var_dump($address->getGrandTotal());
             /* echo $exist_amount; */
 
-            /* var_dump($address); */
+            var_dump($address->getSubtotal());
+            var_dump($address->getBaseGrandTotal());
         }
     }
 
