@@ -70,10 +70,12 @@ class BlueAcorn_Greenspec_Model_Greenspec extends Mage_Payment_Model_Method_Abst
         self::$shippingMethod = $address->getShippingMethod();
         self::$paymentMethod = $address->getQuote()->getPayment()->getMethod();
 
+        $session = Mage::getSingleton('core/session');
+        $greenspecData = $session->getGreenspecData();
+
         $quote = $address->getQuote();
         $totals = $quote->getTotals();
         $discount = 0;
-
 
         if (self::$shippingMethod) {
             // 2% off total shipping if not free or next day shipping
@@ -83,6 +85,10 @@ class BlueAcorn_Greenspec_Model_Greenspec extends Mage_Payment_Model_Method_Abst
             // 20% off grand total if next day shipping is chosen
             else if (in_array(self::$shippingMethod, self::$nextDayShippingMethods)) {
                 $discount += 0.2 * $address->getGrandTotal();
+            }
+            if (is_array($greenspecData) && $greenspecData['visitedPage']) {
+                $discount += 0.2 * $address->getSubtotal();
+
             }
         }
 

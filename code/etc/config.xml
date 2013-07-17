@@ -51,6 +51,20 @@
       </sales_convert_quote_address>
     </fieldsets>
 
+    <events>
+
+      <cms_page_render>
+	<observers>
+	  <blueacorn_disabler>
+	    <class>BlueAcorn_Greenspec_Model_Observer</class>
+	    <method>checkCMSPage</method>
+	    <type>singleton</type>
+	  </blueacorn_disabler>
+	</observers>
+      </cms_page_render>
+
+    </events>
+
   </global>
 
   <default>
