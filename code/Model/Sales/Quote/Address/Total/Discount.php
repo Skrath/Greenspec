@@ -20,23 +20,15 @@ extends Mage_Sales_Model_Quote_Address_Total_Abstract {
 
         $quote = $address->getQuote();
 
-        /* var_dump($quote->getCheckoutMethod()); */
+        $amount = BlueAcorn_Greenspec_Model_Greenspec::getBonus($address);
 
+        $address->setGreenspecBonusAmount($amount);
+        $address->setGreenspecBonusBaseAmount($amount);
 
-        if(BlueAcorn_Greenspec_Model_Greenspec::canApply($address)){ //your business logic
+        $quote->setGreenspecBonusAmount($amount);
 
-            $exist_amount = $quote->getGreenspecBonusAmount();
-            $amount = BlueAcorn_Greenspec_Model_Greenspec::getBonus($address);
-
-            $address->setGreenspecBonusAmount($amount);
-            $address->setGreenspecBonusBaseAmount($amount);
-
-            $quote->setGreenspecBonusAmount($amount);
-
-            $address->setGrandTotal($address->getGrandTotal() + $address->getGreenspecBonusAmount());
-            $address->setBaseGrandTotal($address->getBaseGrandTotal() + $address->getGreenspecBonusBaseAmount());
-
-        }
+        $address->setGrandTotal($address->getGrandTotal() + $address->getGreenspecBonusAmount());
+        $address->setBaseGrandTotal($address->getBaseGrandTotal() + $address->getGreenspecBonusBaseAmount());
     }
 
     public function fetch(Mage_Sales_Model_Quote_Address $address)

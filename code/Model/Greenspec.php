@@ -65,26 +65,10 @@ class BlueAcorn_Greenspec_Model_Greenspec extends Mage_Payment_Model_Method_Abst
 
     /* Here you will need to implement authorize, capture and void public methods */
 
-    /* @see examples of transaction specific public methods such as */
-    /* authorize, capture and void in Mage_Paygate_Model_Authorizenet */
-
-    public static function canApply(Mage_Sales_Model_Quote_Address $address) {
-        self::$shippingMethod = $address->getShippingMethod();
-        self::$paymentMethod = $address->getQuote()->getPayment()->getMethod();
-
-
-        $apply = false;
-        $quote = $address->getQuote();
-
-
-        if ( in_array(self::$shippingMethod, self::$nextDayShippingMethods) ) {
-            $apply = true;
-        }
-
-        return $apply;
-    }
 
     public static function getBonus(Mage_Sales_Model_Quote_Address $address) {
+        self::$shippingMethod = $address->getShippingMethod();
+        self::$paymentMethod = $address->getQuote()->getPayment()->getMethod();
 
         $quote = $address->getQuote();
         $totals = $quote->getTotals();
