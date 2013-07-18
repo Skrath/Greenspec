@@ -11,7 +11,7 @@ class BlueAcorn_Greenspec_VoteController extends Mage_Core_Controller_Front_Acti
             ->setTemplateSubject("Coupon");
 
         // Send email
-        $template->send('jim@blueacorn.com', 'Guest', array("coupon_code"=>$coupon_code));
+        $template->send(Mage::app()->getRequest()->getParam('email'), 'Guest', array("coupon_code"=>$coupon_code));
 
         // Redirect
         $this->_redirectReferer();

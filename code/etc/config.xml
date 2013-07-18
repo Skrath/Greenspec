@@ -8,6 +8,17 @@
   </modules>
 
   <global>
+    <blocks>
+        <ba_greenspec>
+            <class>BlueAcorn_Greenspec_Block</class>
+        </ba_greenspec>
+        <poll>
+            <rewrite>
+                <activePoll>BlueAcorn_Greenspec_Block_ActivePoll</activePoll>
+            </rewrite>
+        </poll>
+    </blocks>
+
     <models>
       <ba_greenspec>
         <class>BlueAcorn_Greenspec_Model</class>
@@ -51,7 +62,35 @@
       </sales_convert_quote_address>
     </fieldsets>
 
+      <template>
+          <email>
+              <poll_coupon_template module="ba_greenspec">
+                  <label>10% Coupon for Poll Participation</label>
+                  <file>poll_coupon.html</file>
+                  <type>html</type>
+              </poll_coupon_template>
+          </email>
+      </template>
   </global>
+
+  <frontend>
+      <routers>
+          <greenspec>
+              <use>standard</use>
+              <args>
+                  <module>BlueAcorn_Greenspec</module>
+                  <frontName>greenspec</frontName>
+              </args>
+          </greenspec>
+      </routers>
+      <layout>
+          <updates>
+              <greenspec>
+                  <file>greenspec.xml</file>
+              </greenspec>
+          </updates>
+      </layout>
+  </frontend>
 
   <default>
     <payment>
@@ -66,5 +105,9 @@
       </greenspec>
     </payment>
   </default>
+
+  <sections>
+      <customer></customer>
+  </sections>
 
 </config>
