@@ -1,0 +1,16 @@
+<?php if ($this->hasVoted()): ?>
+<div class="block block-poll">
+    <div class="block-title">
+        <strong><span>Redeem Coupon</span></strong>
+    </div>
+    <div class="block-content">
+        <p class="block-subtitle">Enter Email</p>
+        <div class="actions">
+            <form action="http://magento.dev/greenspec/vote/submit" method="post">
+                <input type="text" name="email" id="email">
+                <button type="submit" title="Redeem" class="button"><span><span>Redeem</span></span></button>
+            </form>
+        </div>
+    </div>
+</div>
+<?php endif ?>

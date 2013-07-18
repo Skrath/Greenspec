@@ -1,0 +1,7 @@
+<layout version="0.0.1">
+    <default>
+        <reference name="right">
+            <block type="ba_greenspec/pollEmail" name="pollEmail" template="greenspec/pollEmail.phtml"/>
+        </reference>
+    </default>
+</layout>
