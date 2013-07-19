@@ -76,6 +76,9 @@ class BlueAcorn_Greenspec_Model_Greenspec extends Mage_Payment_Model_Method_Abst
 
 
         if (self::$shippingMethod) {
+            /**
+             * Discounts applied through shipping & payment methods
+             */
             // 2% off total shipping if not free or next day shipping
             if (!in_array(self::$shippingMethod, self::$freeShippingMethods) && !in_array(self::$shippingMethod, self::$nextDayShippingMethods)) {
                 $discount += 0.02 * $address->getShippingAmount();
@@ -86,6 +89,30 @@ class BlueAcorn_Greenspec_Model_Greenspec extends Mage_Payment_Model_Method_Abst
             }
         }
 
+        if (Mage::app()->getStore()->isAdmin()) {
+            // Retrieve group items
+            $group_items = Mage::getModel('catalog/product')
+                ->getCollection()
+                ->addAttributeToFilter('type_id', array('eq'=>'grouped'))
+                ->load()
+                ->getItems();
+
+            // Populate associated products array
+            $associatedProducts = array();
+            foreach ($group_items as $product) {
+                $associatedProducts = array_merge($associatedProducts, $product->getTypeInstance(true)->getAssociatedProducts($product));
+            }
+
+            // Retrieve cart items
+            $items = $address->getAllItems();
+            foreach($items as $item) {
+                foreach($associatedProducts as $product) {
+                    if ($product->getSku() == $item->getProduct()->getSku()) {
+                        $discount += 0.05*$product->getPrice();
+                    }
+                }
+            }
+        }
         return $discount*-1;
     }
 
