@@ -73,8 +73,51 @@ class BlueAcorn_Greenspec_Model_Greenspec extends Mage_Payment_Model_Method_Abst
         $session = Mage::getSingleton('core/session');
         $greenspecData = $session->getGreenspecData();
 
+        $containsGroupedProduct = false;
+
         $quote = $address->getQuote();
         $totals = $quote->getTotals();
+        $items = $address->getAllVisibleItems();
+
+        // Getting all grouped products
+        $groupedProducts = Mage::getModel('catalog/product')
+            ->getCollection()
+            ->addAttributeToFilter('type_id', array('eq' => 'grouped'));
+
+        // Building an array of all of the products associated with
+        // grouped products.
+        foreach ($groupedProducts as $product) {
+            $associatedProducts = array_merge($associatedProducts, $product->getTypeInstance(true)->getAssociatedProducts($product));
+        }
+
+        $associatedProducts = array();
+        $productTypeCounts = array();
+        $products = array();
+
+
+        // Looping through all visible items
+        foreach ($items as $item) {
+            $product = $item->getProduct();
+            $products[] = $product;
+
+            if (!isset($productTypeCounts[$item->getProduct()->getTypeId()])) {
+                $productTypeCounts[$item->getProduct()->getTypeId()] = 0;
+            }
+
+            // Enumerate product types
+            $productTypeCounts[$item->getProduct()->getTypeId()] += (int)$item->getQty();
+
+            // Figure out if an item is a grouped product. This will
+            // still return true if a product was purchased outside of
+            // a grouped product but is otherwise avialable via a
+            // grouped product.
+            foreach ($associatedProducts as $product) {
+                if ($item->getProduct()->getEntityId() == $product->getEntityId()) {
+                    $containsGroupedProduct = true;
+                }
+            }
+        }
+
         $discount = 0;
 
         if (self::$shippingMethod) {
@@ -86,11 +129,20 @@ class BlueAcorn_Greenspec_Model_Greenspec extends Mage_Payment_Model_Method_Abst
             else if (in_array(self::$shippingMethod, self::$nextDayShippingMethods)) {
                 $discount += 0.2 * $address->getGrandTotal();
             }
+
             if (is_array($greenspecData) && $greenspecData['visitedPage']) {
                 $discount += 0.2 * $address->getSubtotal();
 
             }
         }
+
+        // Discount negation logic needs to occur last
+        if ( ((isset($productTypeCounts['configurable']) && ($productTypeCounts['configurable'] >= 4))
+              || (isset($productTypeCounts['bundle']) && ($productTypeCounts['bundle'] >= 4)))
+             && $containsGroupedProduct) {
+            $discount = 0;
+        }
+
 
         return $discount*-1;
     }
