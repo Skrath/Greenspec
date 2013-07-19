@@ -6,7 +6,7 @@
     <div class="block-content">
         <p class="block-subtitle">Enter Email</p>
         <div class="actions">
-            <form action="http://magento.dev/greenspec/vote/submit" method="post">
+            <form action="<?php echo Mage::getBaseUrl() ?>/greenspec/vote/submit" method="post">
                 <input type="text" name="email" id="email">
                 <button type="submit" title="Redeem" class="button"><span><span>Redeem</span></span></button>
             </form>
