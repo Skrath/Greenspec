@@ -17,7 +17,6 @@ extends Mage_Sales_Model_Quote_Address_Total_Abstract {
             return $this; //this makes only address type shipping to come through
         }
 
-
         $quote = $address->getQuote();
 
         $amount = BlueAcorn_Greenspec_Model_Greenspec::getBonus($address);

@@ -1,7 +1,8 @@
 <?php
 class BlueAcorn_Greenspec_Block_PollEmail extends Mage_Poll_Block_ActivePoll {
     protected $voted;
-    public function _toHtml() {
+
+    protected function _toHtml() {
         /** @var $coreSessionModel Mage_Core_Model_Session */
         $justVotedPollId = Mage::getSingleton('core/session')->getJustVotedPoll();
 
